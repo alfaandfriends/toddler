@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as s,a as c}from"./app-n-Ao7Jkq.js";const r={},o={class:"flex justify-center items-center h-screen rotate"},a=c("iframe",{src:"https://www.alfaandfriends.com/toddler-web/",class:"w-full h-full rotate",frameborder:"0"},null,-1),n=[a];function l(_,d){return t(),s("div",o,n)}const i=e(r,[["render",l]]);export{i as default};

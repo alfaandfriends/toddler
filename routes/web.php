@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     });
     /* Dashboard */
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/launch/{key}', [LaunchController::class, 'launch'])->name('launch');
+    Route::post('/launch/{key}', [LaunchController::class, 'launch'])->name('launch');
 
     /* Profile */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

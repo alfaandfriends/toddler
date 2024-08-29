@@ -1,0 +1,1 @@
+import{_ as e,o as n,c as t,a as c}from"./app-DGqxqkGa.js";const s={},o={class:"flex items-center intrinsic-container intrinsic-container-16x9"},r=c("iframe",{src:"https://www.alfaandfriends.com/toddler-web/",allowfullscreen:""},null,-1),a=[r];function i(_,l){return n(),t("div",o,a)}const f=e(s,[["render",i]]);export{f as default};

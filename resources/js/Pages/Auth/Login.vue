@@ -77,57 +77,5 @@ const submit = () => {
                 </form>
             </CardContent>
         </Card>
-
-        <!-- <form @submit.prevent="submit">
-            <div>
-                <Label for="email">Email</Label>
-
-                <Input
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.user_email"
-                    required
-                    autofocus
-                    autocomplete="email"
-                    :error="form.errors.user_email"
-                />
-            </div>
-
-            <div class="mt-4">
-                <Label for="password">Password</Label>
-
-                <Input
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.user_pass"
-                    required
-                    autocomplete="current-password"
-                    :error="form.errors.user_pass"
-                />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center space-x-2">
-                    <Checkbox id="remember" v-model:checked="form.remember"></Checkbox>
-                    <Label for="remember" class="cursor-pointer">Remember me</Label>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                >
-                    Forgot your password?
-                </Link>
-
-                <Button class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </Button>
-            </div>
-        </form> -->
     </GuestLayout>
 </template>

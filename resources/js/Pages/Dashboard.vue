@@ -7,6 +7,16 @@ import Pagination from '@/Components/Pagination.vue';
 import moment from 'moment';
 </script>
 
+<script>
+export default {
+    methods: {
+        launch(key){
+            this.$inertia.post(route('launch', key))
+        }
+    }
+}
+</script>
+
 <template>
     <Head title="Dashboard" />
 
@@ -45,7 +55,7 @@ import moment from 'moment';
                                     <TableCell class="whitespace-nowrap text-center">{{ data.swap_count }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">{{ moment(data.expiry_date).format('DD MMM YYYY') }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">
-                                        <Button>Launch</Button>
+                                        <Button @click="launch(data.key)">Launch</Button>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
