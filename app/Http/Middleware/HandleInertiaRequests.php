@@ -33,7 +33,12 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+                'is_admin' => session('is_admin'),
             ],
+            'flash' => [
+                'type'      => session('type'),
+                'message'   => session('message')
+            ]
         ];
     }
 }

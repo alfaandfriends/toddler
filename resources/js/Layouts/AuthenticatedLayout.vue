@@ -6,8 +6,49 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import Toaster from '@/Components/ui/toast/Toaster.vue'
+import { useToast } from '@/Components/ui/toast/use-toast'
 
 const showingNavigationDropdown = ref(false);
+</script>
+
+<script>
+const { toast } = useToast()
+
+export default {
+    data() {
+        return {
+            toastProp: null
+        }
+    },
+    watch: {
+        '$page.props.flash': {
+            handler(new_value, old_value){
+                if(new_value.type != null && new_value.message != null){
+                    this.$nextTick(()=>{
+                        this.toastProp = toast({
+                            description: new_value.message,
+                        });
+                    })
+                }
+            },
+            immediate: true
+        }
+    },
+    mounted(){
+        const { flash } = this.$page.props;
+        if(flash.type != null && flash.message != null) {
+            this.toastProp = toast({
+                description: flash.message,
+            });
+        }
+    },
+    beforeUnmount() {
+        if(this.toastProp){
+            this.toastProp.dismiss();
+        }
+    },
+}
 </script>
 
 <template>
@@ -32,8 +73,8 @@ const showingNavigationDropdown = ref(false);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Schools
+                                <NavLink :href="route('schools')" :active="route().current('schools')" v-if="$page.props.auth.is_admin">
+                                    Manage Schools
                                 </NavLink>
                             </div>
                         </div>
@@ -118,6 +159,9 @@ const showingNavigationDropdown = ref(false);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('schools')" :active="route().current('schools')" v-if="$page.props.auth.is_admin">
+                            Manage Schools
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -140,16 +184,17 @@ const showingNavigationDropdown = ref(false);
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white dark:bg-gray-800 shadow" v-if="$slots.header">
+            <!-- <header class="bg-white dark:bg-gray-800 shadow" v-if="$slots.header">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
-            </header>
+            </header> -->
 
             <!-- Page Content -->
-            <main>
+            <main class="px-3">
                 <slot />
             </main>
+            <Toaster :type="$page.props.flash.type"/>
         </div>
     </div>
 </template>

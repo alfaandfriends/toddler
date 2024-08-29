@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use GuzzleHttp\Client;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -47,9 +49,23 @@ class AuthenticatedSessionController extends Controller
                 // Manually log in the user
                 Auth::login($user, $request->remember);
 
+                $client = new Client();
+                try {
+                    // Make a GET request to the OpenWeather API
+                    $response = $client->get(env('TODDLER_API_URL').env('TODDLER_API_ENDPOINT').Auth::user()->ID);
+        
+                    // Get the response body as an array
+                    $data = json_decode($response->getBody(), true);
+
+                    if(in_array('administrator', $data)){
+                        session(['is_admin' => true]);
+                    }
+                } catch (\Exception $e) {
+                    Log::error($e);
+                }
+
                 // Regenerate the session to prevent session fixation attacks
                 $request->session()->regenerate();
-
 
                 // Redirect to the intended page
                 return redirect()->intended('dashboard');
