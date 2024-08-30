@@ -16,11 +16,9 @@ use Inertia\Inertia;
 use Xammie\Mailbook\Mailbook;
 
 Route::middleware('auth')->group(function () {
-    Route::get('/send', function(){
-        Mail::to('abdulraof628@gmail.com')->send(new AccountCreated('abdulraof628@gmail.com', '123456'));
-    });
     /* Dashboard */
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     Route::post('/launch/{key}', [LaunchController::class, 'launch'])->name('launch');
 
     /* Profile */

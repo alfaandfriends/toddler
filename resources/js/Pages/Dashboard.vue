@@ -10,8 +10,29 @@ import moment from 'moment';
 <script>
 export default {
     methods: {
-        launch(key){
-            this.$inertia.post(route('launch', key))
+        launch(key) {
+            const url = route('launch', { key: key });
+
+            // Create a temporary form element
+            const form = document.createElement('form');
+            form.action = url;
+            form.method = 'POST';
+            form.target = '_blank'; // Open in new tab
+
+            // Add the CSRF token
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = csrfToken;
+            form.appendChild(csrfInput);
+            
+            // Append the form to the body and submit it
+            document.body.appendChild(form);
+            form.submit();
+
+            // Remove the form after submission
+            document.body.removeChild(form);
         }
     }
 }

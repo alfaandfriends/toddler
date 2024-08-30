@@ -8,6 +8,7 @@ use Inertia\Inertia;
 class LaunchController extends Controller
 {
     public function launch($key){
-        return Inertia::render('AppPlayer/Index');
+        // dd($key);
+        return view('toddler_web.index');
     }
 }
