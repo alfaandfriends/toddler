@@ -22,24 +22,42 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     props: {
-        open: Boolean,
-        routeName: String,
-        method: String,
-        id: [String, Number]
+      useInertia: { type: Boolean, default: true },
+      open: Boolean,
+      routeName: String,
+      method: String,
+      id: [String, Number],
+      params: [String, Object],
     },
     emits: ['close'],
     methods: {
         handleRoute(){
-          if (this.id && this.routeName) {
-            this.$inertia.visit(route(this.routeName, this.id), {
+          if(this.useInertia){
+            if (this.id && this.routeName) {
+              this.$inertia.visit(route(this.routeName, this.id), {
+                data: this.params,
+                method: this.method,
+                preserveState: false,
+                preserveScroll: true,
+                onSuccess: () => {
+                  this.$emit('close', true); 
+                }
+              })
+            }
+          }
+          else{
+            axios({
               method: this.method,
-              preserveState: false,
-              preserveScroll: true,
-              onSuccess: () => {
-                this.$emit('close', true); 
-              }
+              url: this.id ? route(this.routeName, this.id) : route(this.routeName),
+              data: this.params
+            })
+            .then((response)=>{
+              this.$emit('close', true); 
+              this.$emit('success', response);  // Emit success event
             })
           }
         }

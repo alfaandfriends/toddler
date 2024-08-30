@@ -15,6 +15,7 @@ class KeyController extends Controller
 
     public function reset($id){
         Key::where('id', $id)->update([
+            'app_token' => null,
             'swap_count' => 0
         ]);
 

@@ -43,12 +43,10 @@ class SchoolController extends Controller
     }
 
     public function store(Request $request){
-        // dd($request->all());
 
         /* Check for all data */
         $user   =   User::where('user_email', $request->email)->first();
         $school =   School::where('email', $request->email)->first();
-        // dd($school);
 
         /* If dont have account, create one */
         if(!$user){
@@ -106,10 +104,6 @@ class SchoolController extends Controller
             'info'  =>  $info,
             'keys'  =>  $keys
         ]);
-    }
-
-    public function update(){
-        
     }
 
     public function destroy($id){

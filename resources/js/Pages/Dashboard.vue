@@ -6,20 +6,62 @@ import Card from '@/Components/Card.vue'
 import Pagination from '@/Components/Pagination.vue';
 import moment from 'moment';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import DeleteConfirmation from '@/Components/DeleteConfirmation.vue';
 </script>
 
 <script>
 export default {
+    components: {
+        DeleteConfirmation
+    },
+    data() {
+        return {
+            confirmation: {
+                is_open: false,
+                use_inertia: false,
+                id: '',
+                route_name: '',
+                method: '',
+                params: '',
+                title: '',
+                description: ''
+            },
+        }
+    },
     methods: {
-        checkStatus(key){
-            axios.post(route('launch.check_status', key), {
-                user_agent: navigator.userAgent
+        checkStatus(app_key){
+            var token = localStorage.getItem('app-key');
+            var token = localStorage.getItem('app-token');
+            
+            localStorage.setItem('app-key', app_key);
+
+            if(!token){
+                token = uuidv4();
+                localStorage.setItem('app-token', token);
+            }
+            
+            axios.post(route('launch.check_status', app_key), {
+                platform: this.$device.os_name,
+                browser: this.$device.browser_name,
+                app_token : token
             })
             .then((response)=>{
-                console.log(response)
+                if(response.data == 100){
+                    this.confirmation.route_name    =   'launch.check_status'
+                    this.confirmation.method        =   'post'
+                    this.confirmation.id            =   app_key
+                    this.confirmation.is_open       =   true
+                    this.confirmation.params        =   {'proceed': true}
+                    this.confirmation.title         =   'Last Device Swap'
+                    this.confirmation.description   =   'This is your last device swap, if you need too reset the device limit please contact support.'
+                }
+                if(response.data == 200){
+                    this.launch()
+                }
             })
         },
-        launch(key) {
+        launch() {
             const url = route('launch');
 
             // Create a temporary form element
@@ -35,6 +77,8 @@ export default {
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
             form.appendChild(csrfInput);
+            form.appendChild(this.createHiddenInput('app_key', localStorage.getItem('app-key')));
+            form.appendChild(this.createHiddenInput('app_token', localStorage.getItem('app-token')));
             
             // Append the form to the body and submit it
             document.body.appendChild(form);
@@ -42,8 +86,15 @@ export default {
 
             // Remove the form after submission
             document.body.removeChild(form);
+        },
+        createHiddenInput(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value;
+            return input;
         }
-    }
+    },
 }
 </script>
 
@@ -56,88 +107,6 @@ export default {
         </template>
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-2">
-                <div>
-
-
-                    <!-- <div v-if="$device.isDesktop">Desktop</div>
-                    <div v-else-if="$device.isTablet">Tablet</div>
-                    <div v-else>Mobile</div>
-                
-                    <div v-if="$device.os.android">Android</div>
-                    <div v-else-if="$device.isIOS">IOS</div>
-                    <div v-else-if="$device.os.windows">Windows</div>
-                     <div v-else-if="$device.os.windows_phone">Windows Mobile</div>
-                    <div v-else-if="$device.isOSx">MAc</div>
-                
-                    <span v-if="$device.browser.chrome" >{{$device.browser_name}}</span> -->
-                    <div>
-                        <!-- Boolean values -->
-                        <p>Is Mobile: {{ $device.isMobile }}</p>
-                        <p>Is Tablet: {{ $device.isTablet }}</p>
-                        <p>Is Desktop: {{ $device.isDesktop }}</p>
-                    
-                        <!-- Strings -->
-                        <p>Model: {{ $device.model }}</p>
-                        <p>Brand: {{ $device.brand }}</p>
-                        <p>Type: {{ $device.type }}</p>
-                        <p>OS Name: {{ $device.os_name }}</p>
-                        <p>OS Platform: {{ $device.os_platform }}</p>
-                        <p>OS Version: {{ $device.os_version }}</p>
-                        <p>Browser Name: {{ $device.browser_name }}</p>
-                        <p>Browser Version: {{ $device.browser_version }}</p>
-                        <p>Browser Engine: {{ $device.browser_engine }}</p>
-                        <p>Browser Engine Version: {{ $device.browser_engine_version }}</p>
-                    
-                        <!-- Boolean OS checks -->
-                        <p>Is Android: {{ $device.isAndroid }}</p>
-                        <p>Is Blackberry: {{ $device.isBlackberry }}</p>
-                        <p>Is iOS: {{ $device.isIOS }}</p>
-                        <p>Is Windows: {{ $device.isWindows }}</p>
-                        <p>Is Windows Phone: {{ $device.isWindowsPhone }}</p>
-                        <p>Is OSX: {{ $device.isOsx }}</p>
-                        <p>Is Linux: {{ $device.isLinux }}</p>
-                        <p>Is Chrome OS: {{ $device.isChromeOs }}</p>
-                        <p>Is Firefox OS: {{ $device.isFireFoxOS }}</p>
-                        <p>Is Gaming Console: {{ $device.GamingConsole }}</p>
-                        <p>Is Bot: {{ $device.isBot }}</p>
-                    
-                        <!-- OS specific booleans -->
-                        <p>OS Android: {{ $device.os.android }}</p>
-                        <p>OS Blackberry: {{ $device.os.blackberry }}</p>
-                        <p>OS iOS: {{ $device.os.ios }}</p>
-                        <p>OS Windows: {{ $device.os.windows }}</p>
-                        <p>OS Windows Phone: {{ $device.os.windows_phone }}</p>
-                        <p>OS Mac: {{ $device.os.mac }}</p>
-                        <p>OS Linux: {{ $device.os.linux }}</p>
-                        <p>OS Chrome: {{ $device.os.chrome }}</p>
-                        <p>OS Firefox: {{ $device.os.firefox }}</p>
-                        <p>OS Gaming Console: {{ $device.os.gamingConsole }}</p>
-                    
-                        <!-- Machine details -->
-                        <p>Machine Brand: {{ $device.machine.brand }}</p>
-                        <p>Machine Model: {{ $device.machine.model }}</p>
-                        <p>Machine OS Name: {{ $device.machine.os_name }}</p>
-                        <p>Machine OS Version: {{ $device.machine.os_version }}</p>
-                        <p>Machine Type: {{ $device.machine.type }}</p>
-                    
-                        <!-- Browser specifics -->
-                        <p>Browser Chrome: {{ $device.browser.chrome }}</p>
-                        <p>Browser Chrome View: {{ $device.browser.chrome_view }}</p>
-                        <p>Browser Chrome Mobile: {{ $device.browser.chrome_mobile }}</p>
-                        <p>Browser Chrome Mobile iOS: {{ $device.browser.chrome_mobile_ios }}</p>
-                        <p>Browser Safari: {{ $device.browser.safari }}</p>
-                        <p>Browser Safari Mobile: {{ $device.browser.safari_mobile }}</p>
-                        <p>Browser MS Edge: {{ $device.browser.msedge }}</p>
-                        <p>Browser IE Mobile: {{ $device.browser.msie_mobile }}</p>
-                        <p>Browser IE: {{ $device.browser.msie }}</p>
-                    
-                        <!-- Additional objects -->
-                        <p>Client: {{ $device.client }}</p>
-                        <p>Detector: {{ $device.detector }}</p>
-                        <p>Bot: {{ $device.bot }}</p>
-                        <p>Machine: {{ $device.machine }}</p>
-                      </div>
-                  </div>
                 <Card>
                     <template #title>Toddler App Keys</template>
                     <template #content>
@@ -167,7 +136,8 @@ export default {
                                     <TableCell class="whitespace-nowrap text-center">{{ data.swap_count }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">{{ moment(data.expiry_date).format('DD MMM YYYY') }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">
-                                        <Button @click="checkStatus(data.key)">Launch</Button>
+                                        <Button @click="checkStatus(data.key)" v-if="data.swap_count != 3">Launch</Button>
+                                        <div class="text-red-500 py-2" v-if="data.swap_count == 3">Device Limit Reached</div>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -178,4 +148,8 @@ export default {
             </div>
         </div>
     </AuthenticatedLayout>
+    <DeleteConfirmation :useInertia="confirmation.use_inertia" @success="launch()" :open="confirmation.is_open" @close="confirmation.is_open = false" :routeName="confirmation.route_name" :id="confirmation.id" :method="confirmation.method" :params="confirmation.params">
+        <template #title>{{ confirmation.title }}</template>
+        <template #description>{{ confirmation.description }}</template>
+    </DeleteConfirmation>
 </template>

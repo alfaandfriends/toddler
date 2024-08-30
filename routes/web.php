@@ -15,12 +15,15 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Xammie\Mailbook\Mailbook;
 
+Route::get('/get-player-data', [LaunchController::class, 'getPlayerData'])->name('launch.get_player_data');
+
 Route::middleware('auth')->group(function () {
     /* Dashboard */
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     Route::post('/launch/status/{key}', [LaunchController::class, 'checkStatus'])->name('launch.check_status');
     Route::post('/launch', [LaunchController::class, 'launch'])->name('launch');
+    
 
     /* Profile */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
