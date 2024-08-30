@@ -6,6 +6,7 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import vueDebounce from 'vue-debounce'
+import devicePlugin from '../plugins/device';
 
 /* Shadcn Vue */
 import { Input } from '@/Components/ui/input'
@@ -23,6 +24,7 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(devicePlugin)
             .directive('debounce', vueDebounce({ lock: true }))
             .component('Input', Input)
             .component('Label', Label)

@@ -26,6 +26,7 @@
         "radix-vue": "^1.9.4",
         "tailwind-merge": "^2.5.2",
         "tailwindcss-animate": "^1.0.7",
-        "vue-debounce": "^5.0.0"
+        "vue-debounce": "^5.0.0",
+        "vue-device-detector-js": "^1.0.2"
     }
 }
