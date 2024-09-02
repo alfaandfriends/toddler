@@ -23,6 +23,7 @@
         <!--<div id="unity-build-title">Little Scientists Toddler</div>-->
       </div>
     </div>
+    <script src="sendLocalStorageToUnity.js"></script>
     <script>
 
       var container = document.querySelector("#unity-container");
