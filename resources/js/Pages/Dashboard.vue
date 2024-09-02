@@ -30,21 +30,22 @@ export default {
         }
     },
     methods: {
-        checkStatus(app_key){
-            var token = localStorage.getItem('app-key');
-            var token = localStorage.getItem('app-token');
-            
+        checkStatus(app_key, school_code, kit_id){
             localStorage.setItem('app-key', app_key);
+            localStorage.setItem('app-school-code', school_code);
+            localStorage.setItem('app-kit-id', kit_id);
 
-            if(!token){
-                token = uuidv4();
-                localStorage.setItem('app-token', token);
+            var app_token       = localStorage.getItem('app-token');
+            
+            if(!app_token){
+                app_token = uuidv4();
+                localStorage.setItem('app-token', app_token);
             }
             
             axios.post(route('launch.check_status', app_key), {
                 platform: this.$device.os_name,
                 browser: this.$device.browser_name,
-                app_token : token
+                app_token : app_token
             })
             .then((response)=>{
                 if(response.data == 100){
@@ -136,7 +137,7 @@ export default {
                                     <TableCell class="whitespace-nowrap text-center">{{ data.swap_count }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">{{ moment(data.expiry_date).format('DD MMM YYYY') }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">
-                                        <Button @click="checkStatus(data.key)" v-if="data.swap_count != 3">Launch</Button>
+                                        <Button @click="checkStatus(data.key, data.school_ref.code, data.kit_id)" v-if="data.swap_count != 3">Launch</Button>
                                         <div class="text-red-500 py-2" v-if="data.swap_count == 3">Device Limit Reached</div>
                                     </TableCell>
                                 </TableRow>
