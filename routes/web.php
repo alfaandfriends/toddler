@@ -7,15 +7,15 @@ use App\Http\Controllers\LaunchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Middleware\AdminOnly;
+use App\Http\Resources\api;
 use App\Mail\AccountCreated;
+use App\Models\Key;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Xammie\Mailbook\Mailbook;
-
-Route::get('/get-player-data', [LaunchController::class, 'getPlayerData'])->name('launch.get_player_data');
 
 Route::middleware('auth')->group(function () {
     /* Dashboard */

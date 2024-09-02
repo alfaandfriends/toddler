@@ -34,15 +34,6 @@ class LaunchController extends Controller
     }
 
     public function launch(Request $request){
-        session(['app_key' => $request->app_key, 'app_token' => $request->app_token]);
         return view('toddler_web.index');
-    }
-
-    public function getPlayerData(){
-        $kit_id = Key::where('key', session('app_key'))->where('app_token', session('app_token'))->pluck('kit_id')->first();
-
-        return response()->json([
-            'kit' => $kit_id,
-        ], 200);
     }
 }
