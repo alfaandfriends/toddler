@@ -63,6 +63,10 @@ export default {
             })
         },
         launch() {
+            console.log(localStorage.getItem('app-key'))
+            console.log(localStorage.getItem('app-token'))
+            console.log(localStorage.getItem('app-school-code'))
+            console.log(localStorage.getItem('app-kit-id'))
             const url = route('launch');
 
             // Create a temporary form element
