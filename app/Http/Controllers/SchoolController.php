@@ -129,9 +129,19 @@ class SchoolController extends Controller
         $new_password  =   Str::random(8);
         $encoded_new_password   =   WpPassword::make($new_password);
 
-        User::where('user_email', $owner_email)->updateQuietly([
-            'user_pass' => $encoded_new_password, 
-        ]);
+        $user = User::where('user_email', $owner_email)->first();
+
+        if ($user) {
+            // Temporarily disable timestamps
+            $user->timestamps = false;
+        
+            // Update the user's attributes
+            $user->user_pass = $encoded_new_password;
+            $user->save(); // This will not update the `updated_at` column
+        }
+        // User::where('user_email', $owner_email)->updateQuietly([
+        //     'user_pass' => $encoded_new_password, 
+        // ]);
 
         /* Send Email */
         Mail::to($owner_email)->send(new PasswordReset($owner_email, $new_password));
