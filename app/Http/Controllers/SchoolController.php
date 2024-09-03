@@ -50,16 +50,17 @@ class SchoolController extends Controller
 
         /* If dont have account, create one */
         if(!$user){
-            $random_password    =   WpPassword::make(Str::random(8));
+            $new_password  =   Str::random(8);
+            $encoded_new_password   =   WpPassword::make($new_password);
             User::insert([
                 'user_login' => Str::before($request->email, '@'),
-                'user_pass' => $random_password,
+                'user_pass' => $encoded_new_password,
                 'user_nicename' => Str::before($request->email, '@'),
                 'user_email' => $request->email,
                 'display_name' => Str::before($request->email, '@'),
             ]);
 
-            Mail::to($request->email)->send(new AccountCreated($request->email, $random_password));
+            Mail::to($request->email)->send(new AccountCreated($request->email, $new_password));
         }
 
         /* If dont have school, create one*/

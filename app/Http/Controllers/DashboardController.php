@@ -15,7 +15,9 @@ class DashboardController extends Controller
         $keys   =   Key::with([
             'kitRef',
             'schoolRef'
-        ])
+        ])->whereHas('schoolRef', function($query) {
+            $query->where('email', Auth::user()->user_email);
+        })
         ->paginate(10);
         
         return Inertia::render('Dashboard', [

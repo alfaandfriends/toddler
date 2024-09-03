@@ -81,6 +81,12 @@
                                     <span>Delete School</span>
                                 </Button>
                             </div>
+                        </div>
+                    </template>
+                </Card>
+                <Card>
+                    <template #content>
+                        <div class="flex justify-end">
                             <Button variant="outline" class="space-x-1" @click="$inertia.get(route('schools'))">
                                 <ResetIcon class="h-4 w-4"></ResetIcon>
                                 <span>Back</span> 
