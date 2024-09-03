@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->user_pass;
     }
+    
+    public function setUpdatedAt($value)
+    {
+        // Do nothing, or set $this->updated_at = null;
+    }
 }
