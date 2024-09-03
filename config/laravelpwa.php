@@ -13,7 +13,7 @@ return [
         'status_bar'=> 'black',
         'icons' => [
             '72x72' => [
-                'path' => 'images/icons/icon-72x72.png',
+                'path' => '/images/icons/icon-72x72.png',
                 'purpose' => 'any'
             ],
             '96x96' => [
@@ -63,10 +63,15 @@ return [
                 'description' => 'Shortcut Link 1 Description',
                 'url' => '/',
                 'icons' => [
-                    "src" => "/images/icons/icon-96x96.png",
+                    "src" => "/images/icons/icon-72x72.png",
                     "purpose" => "any"
                 ]
             ],
+            [
+                'name' => 'Shortcut Link 2',
+                'description' => 'Shortcut Link 2 Description',
+                'url' => '/'
+            ]
         ],
         'custom' => []
     ]
