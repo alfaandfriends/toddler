@@ -13,7 +13,8 @@ class DashboardController extends Controller
     public function index(Request $request){
 
         $keys   =   Key::with([
-            'kitRef'
+            'kitRef',
+            'schoolRef'
         ])
         ->paginate(10);
         

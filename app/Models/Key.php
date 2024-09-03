@@ -14,4 +14,8 @@ class Key extends Model
     public function kitRef(){
         return $this->belongsTo(Kit::class, 'kit_id');
     }
+
+    public function schoolRef(){
+        return $this->belongsTo(School::class, 'school_id');
+    }
 }
