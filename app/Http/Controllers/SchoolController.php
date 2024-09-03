@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AccountCreated;
+use App\Mail\KeyGenerated;
+use App\Mail\PasswordReset;
 use App\Models\Category;
 use App\Models\Key;
 use App\Models\Kit;
@@ -90,6 +92,7 @@ class SchoolController extends Controller
         }
 
         /* Send Email */
+        // Mail::to($request->email)->send(new KeyGenerated($request->email, $new_password));
         
         return back()->with(['type'=>'success', 'message'=>'Data has been added.']);
     }
@@ -122,13 +125,16 @@ class SchoolController extends Controller
 
     public function resetPassword($id){
         $owner_email    =   School::where('id', $id)->pluck('email')->first();
-        dd($owner_email);
+
+        $new_password  =   Str::random(8);
+        $encoded_new_password   =   WpPassword::make($new_password);
 
         User::where('user_email', $owner_email)->update([
-            'user_pass' => WpPassword::make(123),   //Change this to random
+            'user_pass' => $encoded_new_password, 
         ]);
 
         /* Send Email */
+        Mail::to($owner_email)->send(new PasswordReset($owner_email, $new_password));
 
         return redirect(route('schools'))->with(['type'=>"success", 'message'=>"Password has been reset and new password has been sent to owner's email."]);
     }

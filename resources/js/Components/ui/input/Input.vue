@@ -29,6 +29,11 @@ const modelValue = useVModel(props, "modelValue", emits, {
         )
       "
     />
-    <span v-if="error" class="text-[0.8rem] font-medium text-destructive">This field is required.</span>
+    <span v-if="typeof error === 'string'" class="text-[0.8rem] font-medium text-destructive">
+      {{ error }}
+    </span>
+    <span v-else-if="error" class="text-[0.8rem] font-medium text-destructive">
+      This field is required.
+    </span>
   </div>
 </template>
