@@ -12948,12 +12948,13 @@ var ASM_CONSTS = {
 
   function _getLocalStorageData(key) {
   
-          var returnStr = UTF8ToString(key);
-          console.log(returnStr);
+          var decoded_key = UTF8ToString(key);
+          var data = localStorage.getItem(decoded_key);
+          console.log(data);
   
-          var bufferSize = lengthBytesUTF8(returnStr) + 1;
+          var bufferSize = lengthBytesUTF8(data) + 1;
           var buffer = _malloc(bufferSize);
-          stringToUTF8(returnStr, buffer, bufferSize);
+          stringToUTF8(data, buffer, bufferSize);
           return buffer;
       }
 
