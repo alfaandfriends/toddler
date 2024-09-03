@@ -63,10 +63,6 @@ export default {
             })
         },
         launch() {
-            console.log(localStorage.getItem('app-key'))
-            console.log(localStorage.getItem('app-token'))
-            console.log(localStorage.getItem('app-school-code'))
-            console.log(localStorage.getItem('app-kit-id'))
             const url = route('launch');
 
             // Create a temporary form element
@@ -82,9 +78,11 @@ export default {
             csrfInput.name = '_token';
             csrfInput.value = csrfToken;
             form.appendChild(csrfInput);
+
+            // Add the localStorage items to the form
             form.appendChild(this.createHiddenInput('app_key', localStorage.getItem('app-key')));
             form.appendChild(this.createHiddenInput('app_token', localStorage.getItem('app-token')));
-            
+
             // Append the form to the body and submit it
             document.body.appendChild(form);
             form.submit();
