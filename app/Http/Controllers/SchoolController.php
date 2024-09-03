@@ -129,7 +129,7 @@ class SchoolController extends Controller
         $new_password  =   Str::random(8);
         $encoded_new_password   =   WpPassword::make($new_password);
 
-        User::where('user_email', $owner_email)->update([
+        User::where('user_email', $owner_email)->updateQuietly([
             'user_pass' => $encoded_new_password, 
         ]);
 
