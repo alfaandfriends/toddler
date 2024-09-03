@@ -57,22 +57,22 @@ return [
             '1668x2388' => '/images/icons/splash-1668x2388.png',
             '2048x2732' => '/images/icons/splash-2048x2732.png',
         ],
-        // 'shortcuts' => [
-        //     [
-        //         'name' => 'Shortcut Link 1',
-        //         'description' => 'Shortcut Link 1 Description',
-        //         'url' => '/dashboard',
-        //         'icons' => [
-        //             "src" => "/images/icons/icon-72x72.png",
-        //             "purpose" => "any"
-        //         ]
-        //     ],
-        //     [
-        //         'name' => 'Shortcut Link 2',
-        //         'description' => 'Shortcut Link 2 Description',
-        //         'url' => '/dashboard'
-        //     ]
-        // ],
+        'shortcuts' => [
+            [
+                'name' => 'Shortcut Link 1',
+                'description' => 'Shortcut Link 1 Description',
+                'url' => '/dashboard',
+                'icons' => [
+                    "src" => "/images/icons/icon-72x72.png",
+                    "purpose" => "any"
+                ]
+            ],
+            [
+                'name' => 'Shortcut Link 2',
+                'description' => 'Shortcut Link 2 Description',
+                'url' => '/dashboard'
+            ]
+        ],
         'custom' => []
     ]
 ];
