@@ -60,7 +60,7 @@
       var loaderUrl = buildUrl + "/65f99af8b5caab27fb1088a8e2a52af3.loader.js";
       var config = {
         dataUrl: buildUrl + "/a65f92b92c95d64ac7590e6fc83dd25f.data",
-        frameworkUrl: buildUrl + "/3fa88d89f23e34f1de21a7b791473279.framework.js",
+        frameworkUrl: buildUrl + "/3a2bae7d6d676107d0eadbf7c2132e90.framework.js",
         codeUrl: buildUrl + "/2cbb9e0ac85b6e565c9e88b5dafcad3d.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Alfa and Friends Sdn Bhd",

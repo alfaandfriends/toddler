@@ -12951,7 +12951,7 @@ var ASM_CONSTS = {
           
           var bufferSize = lengthBytesUTF8(key) + 1;
           var buffer = _malloc(bufferSize);
-          stringToUTF8(str, buffer, bufferSize);
+          stringToUTF8(key, buffer, bufferSize);
           return buffer;
       }
 
