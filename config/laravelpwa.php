@@ -61,17 +61,12 @@ return [
             [
                 'name' => 'Shortcut Link 1',
                 'description' => 'Shortcut Link 1 Description',
-                'url' => '/dashboard',
+                'url' => '/',
                 'icons' => [
-                    "src" => "/images/icons/icon-72x72.png",
+                    "src" => "/images/icons/icon-96x96.png",
                     "purpose" => "any"
                 ]
             ],
-            [
-                'name' => 'Shortcut Link 2',
-                'description' => 'Shortcut Link 2 Description',
-                'url' => '/dashboard'
-            ]
         ],
         'custom' => []
     ]
