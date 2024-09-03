@@ -127,19 +127,21 @@ class SchoolController extends Controller
         $owner_email    =   School::where('id', $id)->pluck('email')->first();
 
 
-        $user = User::where('user_email', $owner_email)->first();
+        // $user = User::where('user_email', $owner_email)->first();
 
-        if ($user) {
-            $new_password           =   Str::random(8);
-            $encoded_new_password   =   WpPassword::make($new_password);
+        // if ($user) {
+        //     $new_password           =   Str::random(8);
+        //     $encoded_new_password   =   WpPassword::make($new_password);
 
-            $user->timestamps = false;
-            $user->user_pass = $encoded_new_password;
-            $user->save(); // This will not update the `updated_at` column
-        }
-        // User::where('user_email', $owner_email)->updateQuietly([
-        //     'user_pass' => $encoded_new_password, 
-        // ]);
+        //     $user->timestamps = false;
+        //     $user->user_pass = $encoded_new_password;
+        //     $user->save(); // This will not update the `updated_at` column
+        // }
+        $new_password           =   Str::random(8);
+        $encoded_new_password   =   WpPassword::make($new_password);
+        User::where('user_email', $owner_email)->update([
+            'user_pass' => $encoded_new_password, 
+        ]);
 
         /* Send Email */
         Mail::to($owner_email)->send(new PasswordReset($owner_email, $new_password));
