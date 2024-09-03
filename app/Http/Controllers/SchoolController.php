@@ -52,7 +52,7 @@ class SchoolController extends Controller
 
         /* If dont have account, create one */
         if(!$user){
-            $new_password  =   Str::random(8);
+            $new_password           =   Str::random(8);
             $encoded_new_password   =   WpPassword::make($new_password);
             User::insert([
                 'user_login' => Str::before($request->email, '@'),
@@ -126,16 +126,14 @@ class SchoolController extends Controller
     public function resetPassword($id){
         $owner_email    =   School::where('id', $id)->pluck('email')->first();
 
-        $new_password  =   Str::random(8);
-        $encoded_new_password   =   WpPassword::make($new_password);
 
         $user = User::where('user_email', $owner_email)->first();
 
         if ($user) {
-            // Temporarily disable timestamps
+            $new_password           =   Str::random(8);
+            $encoded_new_password   =   WpPassword::make($new_password);
+
             $user->timestamps = false;
-        
-            // Update the user's attributes
             $user->user_pass = $encoded_new_password;
             $user->save(); // This will not update the `updated_at` column
         }
