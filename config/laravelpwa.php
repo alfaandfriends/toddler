@@ -5,10 +5,10 @@ return [
     'manifest' => [
         'name' => env('APP_NAME', 'My PWA App'),
         'short_name' => 'ANFT',
-        'start_url' =>  env('APP_URL',''),
+        'start_url' =>  env('APP_URL','').'?fullscreen=true',
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
-        'display' => 'standalone',
+        'display' => 'fullscreen',
         'orientation'=> 'any',
         'status_bar'=> 'black',
         'icons' => [
