@@ -69,7 +69,6 @@ export default {
             const form = document.createElement('form');
             form.action = url;
             form.method = 'POST';
-            form.target = '_blank'; // Open in new tab
 
             // Add the CSRF token
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
