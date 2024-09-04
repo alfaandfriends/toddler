@@ -54,8 +54,8 @@ export default {
                     this.confirmation.id            =   app_key
                     this.confirmation.is_open       =   true
                     this.confirmation.params        =   {'proceed': true}
-                    this.confirmation.title         =   'Last Device Swap'
-                    this.confirmation.description   =   'This is your last device swap, if you need too reset the device limit please contact support.'
+                    this.confirmation.title         =   'Swap Count'
+                    this.confirmation.description   =   'You are about to reach maximum swap count for this key, if you need to reset the device limit please contact us.'
                 }
                 if(response.data == 200){
                     this.launch()
@@ -138,8 +138,8 @@ export default {
                                     <TableCell class="whitespace-nowrap text-center">{{ data.swap_count }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">{{ moment(data.expiry_date).format('DD MMM YYYY') }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">
-                                        <Button @click="checkStatus(data.key, data.school_ref.code, data.kit_id)" v-if="data.swap_count != 3">Launch</Button>
-                                        <div class="text-red-500 py-2" v-if="data.swap_count == 3">Device Limit Reached</div>
+                                        <Button @click="checkStatus(data.key, data.school_ref.code, data.kit_id)" v-if="data.swap_count < 4">Launch</Button>
+                                        <div class="text-red-500 py-2" v-if="data.swap_count == 4">Device Limit Reached</div>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

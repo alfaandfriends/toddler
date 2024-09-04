@@ -33,8 +33,8 @@
                             <TableHeader class="bg-gray-100">
                                 <TableRow>
                                     <TableHead>#</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>Code</TableHead>
+                                    <TableHead>School Name</TableHead>
+                                    <TableHead>School Code</TableHead>
                                     <TableHead>Category</TableHead>
                                     <TableHead class="text-center">Action</TableHead>
                                 </TableRow>
@@ -86,10 +86,6 @@
     <DialogModal v-model:open="show.key_activation">
         <template #title>Key Activation</template>
         <template #content>
-            <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-                <span class="font-medium">Notes: </span> 
-                This will remove existing keys and create new keys for the school
-            </div>
             <div class="grid grid-cols-1 gap-4 py-1">
                 <!-- <div class="">
                     <Alert>
@@ -134,6 +130,10 @@
                     <p class="mt-0.5 text-[0.8rem] font-medium text-destructive" v-if="!key_activation_form.kits.find(item=>item.checked == true)">
                       At least 1 kit is required.
                     </p>
+                </div>
+                <div class="p-4 text-sm text-red-700 rounded-lg bg-red-50" role="alert">
+                    <span class="font-medium">Warning: </span> 
+                    This school already have an active keys. This will replace the keys.
                 </div>
                 <hr class="mt-3">
             </div>
