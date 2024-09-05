@@ -68,14 +68,14 @@ export default {
                     this.confirmation.id            =   [app_key, app_token]
                     this.confirmation.is_open       =   true
                     this.confirmation.title         =   'New Device Detected'
-                    this.confirmation.subtitle      =   'Active device: ' + data.active_device_name
+                    this.confirmation.subtitle      =   'Active Device: ' + data.active_device_name
                     this.confirmation.description   =   'You are trying to launch on a new device, are you sure?'
                 }
                 if(data.last_swap){
                     this.confirmation.id            =   [app_key, app_token]
                     this.confirmation.is_open       =   true
                     this.confirmation.title         =   'New Device Detected'
-                    this.confirmation.subtitle      =   'Active device: ' + data.active_device_name
+                    this.confirmation.subtitle      =   'Active Device: ' + data.active_device_name
                     this.confirmation.description   =   'You are about to reach maximum swap count for this key, if you need to reset the device limit please contact us.'
                 }
                 if(data.device_limit_reached){
@@ -176,8 +176,8 @@ export default {
     </AuthenticatedLayout>
     <DeleteConfirmation :useInertia="confirmation.use_inertia" @success="launch()" :open="confirmation.is_open" @close="confirmation.is_open = false" :routeName="confirmation.route_name" :id="confirmation.id" :method="confirmation.method" :params="confirmation.params">
         <template #title>{{ confirmation.title }}</template>
-        <template #subtitle>{{ confirmation.subtitle }}</template>
-        <template #description>{{ confirmation.description }}</template>
+        <template #subtitle v-if="confirmation.subtitle">{{ confirmation.subtitle }}</template>
+        <template #description v-if="confirmation.description">{{ confirmation.description }}</template>
         <template #content>
             <Input type="text" maxlength="30" class="text-slate-900" v-model="device_name" placeholder="New Device Name"></Input>
         </template>

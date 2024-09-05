@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\School;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,26 +19,45 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $school =   School::where('email', $request->user()->user_email)->first();
+        
         return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
+            'school' => $school
         ]);
     }
 
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'email'],
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if($request->email == $request->user()->user_email){
+            School::where('email', $request->user()->user_email)->update([
+                'name' => $request->name
+            ]);
+
+            return back()->with(['type' => 'success', 'message' => 'Profile has been updated.']);
         }
+        
+        School::where('email', $request->user()->user_email)->update([
+            'name' => $request->name,
+            'email' => $request->email
+        ]);
+        $request->user()->update([
+            'user_email' => $request->email
+        ]);
 
-        $request->user()->save();
+        Auth::logout();
 
-        return Redirect::route('profile.edit');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/');
     }
 
     /**

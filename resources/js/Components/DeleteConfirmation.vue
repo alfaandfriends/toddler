@@ -10,12 +10,10 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
             <slot name="title"></slot>
         </AlertDialogTitle>
         <AlertDialogDescription v-if="$slots.subtitle || $slots.description">
-          <div class="text-slate-800 text-[15px] font-semibold underline mb-1 mt-3">
+          <div class="mb-3 mt-1 text-slate-800 font-medium text-md" v-if="$slots.subtitle">
             <slot name="subtitle"></slot>
           </div>
-          <div class="font-semibold">
-            <slot name="description"></slot>
-          </div>
+          <slot name="description" v-if="$slots.description"></slot>
         </AlertDialogDescription>
       </AlertDialogHeader>
       <slot name="content"></slot>
@@ -43,8 +41,8 @@ export default {
     methods: {
         handleRoute(){
           if(this.useInertia){
-            if (this.id && this.routeName) {
-              this.$inertia.visit(route(this.routeName, this.id), {
+            if (this.routeName) {
+              this.$inertia.visit(this.routeName && this.id ? route(this.routeName, this.id) : route(this.routeName), {
                 data: this.params,
                 method: this.method,
                 preserveState: false,
