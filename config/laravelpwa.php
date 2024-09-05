@@ -4,7 +4,7 @@ return [
     'name' => 'ALFA and Friends Toddler',
     'manifest' => [
         'name' => env('APP_NAME', 'My PWA App'),
-        'short_name' => 'ALFA and Friends Toddler',
+        'short_name' => 'Toddler',
         'start_url' =>  env('APP_URL',''),
         'background_color' => '#ffffff',
         'theme_color' => '#000000',

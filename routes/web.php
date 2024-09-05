@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     /* Dashboard */
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    Route::post('/launch/status/{key}', [LaunchController::class, 'checkStatus'])->name('launch.check_status');
+    Route::post('/check-device/{app_key}/{app_token}', [LaunchController::class, 'checkDevice'])->name('launch.check_device');
     Route::post('/launch', [LaunchController::class, 'launch'])->name('launch');
     
 
@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/schools/update', [SchoolController::class, 'update'])->name('schools.update');
         Route::delete('/schools/destroy/{id}', [SchoolController::class, 'destroy'])->name('schools.destroy');
         Route::get('/schools/info/{code}', [SchoolController::class, 'info'])->name('schools.info');
+        Route::get('/schools/check_email/{email}', [SchoolController::class, 'checkEmail'])->name('schools.check_email');
+        Route::get('/schools/check_kit/{school_id}/{kit_id}', [SchoolController::class, 'checkKit'])->name('schools.check_kit');
         Route::post('/schools/reset-password/{id}', [SchoolController::class, 'resetPassword'])->name('schools.reset_password');
         
         Route::post('/keys/reset/{id}', [KeyController::class, 'reset'])->name('keys.reset');

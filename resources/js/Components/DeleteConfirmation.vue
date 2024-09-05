@@ -9,10 +9,16 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
         <AlertDialogTitle v-if="$slots.title">
             <slot name="title"></slot>
         </AlertDialogTitle>
-        <AlertDialogDescription>
+        <AlertDialogDescription v-if="$slots.subtitle || $slots.description">
+          <div class="text-slate-800 text-[15px] font-semibold underline mb-1 mt-3">
+            <slot name="subtitle"></slot>
+          </div>
+          <div class="font-semibold">
             <slot name="description"></slot>
+          </div>
         </AlertDialogDescription>
       </AlertDialogHeader>
+      <slot name="content"></slot>
       <AlertDialogFooter>
         <AlertDialogCancel @click="$emit('close', true)">Cancel</AlertDialogCancel>
         <AlertDialogAction class="bg-red-600 hover:bg-red-500" @click="handleRoute">Continue</AlertDialogAction>
@@ -30,10 +36,10 @@ export default {
       open: Boolean,
       routeName: String,
       method: String,
-      id: [String, Number],
+      id: [String, Number, Array],
       params: [String, Object],
     },
-    emits: ['close'],
+    emits: ['close', 'success'],
     methods: {
         handleRoute(){
           if(this.useInertia){

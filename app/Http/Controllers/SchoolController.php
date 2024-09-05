@@ -76,9 +76,10 @@ class SchoolController extends Controller
             ]);
         }
 
-        Key::where('school_id', $school_id)->delete();
+        // Key::where('school_id', $school_id)->delete();
         foreach($request->kits as $key=>$kit){
             if($kit['checked']){
+                Key::where('school_id', $school_id)->where('kit_id', $kit['id'])->delete();
                 for($i = 0; $i < 2; $i++){
                     Key::insert([
                         'school_id' => $school ? $school->id : $school_id,
@@ -123,20 +124,21 @@ class SchoolController extends Controller
         return $info;
     }
 
+    public function checkEmail($email){
+        $email_exist   =   School::where('email', $email)->exists();
+
+        return $email_exist;
+    }
+
+    public function checkKit($school_id, $kit_id){
+        $kit_exists   =   Key::where('school_id', $school_id)->where('kit_id', $kit_id)->exists();
+
+        return $kit_exists;
+    }
+
     public function resetPassword($id){
         $owner_email    =   School::where('id', $id)->pluck('email')->first();
-
-
-        // $user = User::where('user_email', $owner_email)->first();
-
-        // if ($user) {
-        //     $new_password           =   Str::random(8);
-        //     $encoded_new_password   =   WpPassword::make($new_password);
-
-        //     $user->timestamps = false;
-        //     $user->user_pass = $encoded_new_password;
-        //     $user->save(); // This will not update the `updated_at` column
-        // }
+        
         $new_password           =   Str::random(8);
         $encoded_new_password   =   WpPassword::make($new_password);
         User::where('user_email', $owner_email)->update([
