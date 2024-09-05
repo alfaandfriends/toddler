@@ -3,7 +3,7 @@
 return [
     'name' => 'Little Scientist Toddler',
     'manifest' => [
-        'name' => env('APP_NAME', 'My PWA App'),
+        'name' => 'Little Scientist Toddler',
         'short_name' => 'Little Scientist Toddler',
         'start_url' =>  env('APP_URL',''),
         'background_color' => '#ffffff',
