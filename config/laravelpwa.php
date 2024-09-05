@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'name' => 'ALFA and Friends Toddler',
+    'name' => 'Little Scientist Toddler',
     'manifest' => [
         'name' => env('APP_NAME', 'My PWA App'),
-        'short_name' => 'Toddler',
+        'short_name' => 'Little Scientist Toddler',
         'start_url' =>  env('APP_URL',''),
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
@@ -13,49 +13,49 @@ return [
         'status_bar'=> 'black',
         'icons' => [
             '72x72' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_72.png',
                 'purpose' => 'any'
             ],
             '96x96' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_96.png',
                 'purpose' => 'any'
             ],
             '128x128' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_128.png',
                 'purpose' => 'any'
             ],
             '144x144' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_144.png',
                 'purpose' => 'any'
             ],
             '152x152' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_152.png',
                 'purpose' => 'any'
             ],
             '192x192' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_192.png',
                 'purpose' => 'any'
             ],
             '384x384' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_384.png',
                 'purpose' => 'any'
             ],
             '512x512' => [
-                'path' => '/images/logo-toddler.png',
+                'path' => '/icons/icon_toddler_512.png',
                 'purpose' => 'any'
             ],
         ],
         'splash' => [
-            '640x1136' => '/images/logo-toddler.png',
-            '750x1334' => '/images/logo-toddler.png',
-            '828x1792' => '/images/logo-toddler.png',
-            '1125x2436' => '/images/logo-toddler.png',
-            '1242x2208' => '/images/logo-toddler.png',
-            '1242x2688' => '/images/logo-toddler.png',
-            '1536x2048' => '/images/logo-toddler.png',
-            '1668x2224' => '/images/logo-toddler.png',
-            '1668x2388' => '/images/logo-toddler.png',
-            '2048x2732' => '/images/logo-toddler.png',
+            '640x1136' => '/icons/icon_toddler_512.png',
+            '750x1334' => '/icons/icon_toddler_512.png',
+            '828x1792' => '/icons/icon_toddler_512.png',
+            '1125x2436' => '/icons/icon_toddler_512.png',
+            '1242x2208' => '/icons/icon_toddler_512.png',
+            '1242x2688' => '/icons/icon_toddler_512.png',
+            '1536x2048' => '/icons/icon_toddler_512.png',
+            '1668x2224' => '/icons/icon_toddler_512.png',
+            '1668x2388' => '/icons/icon_toddler_512.png',
+            '2048x2732' => '/icons/icon_toddler_512.png',
         ],
         // 'shortcuts' => [
         //     [

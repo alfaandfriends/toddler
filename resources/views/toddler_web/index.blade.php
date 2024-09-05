@@ -53,9 +53,9 @@
       var buildUrl = "/ToddlerBuild";
       var loaderUrl = buildUrl + "/9edd899bc6b6e0bbc4f46ff33ca0bba6.loader.js";
       var config = {
-        dataUrl: buildUrl + "/d0ad18cb9a8ca211954b7a13708ebf91.data.br",
-        frameworkUrl: buildUrl + "/9cb3713b2c176cfae7d4094ad76b3b9c.framework.js.br",
-        codeUrl: buildUrl + "/8d1c68c3dfda1722fe4846a022f1b731.wasm.br",
+        dataUrl: buildUrl + "/4a7f4ad43f9770cc2980f3239471222f.data.br",
+        frameworkUrl: buildUrl + "/e5a82dbfb57554087cf378e091ee53fc.framework.js.br",
+        codeUrl: buildUrl + "/bc9a1090dec4ae79edabfbfc308e2262.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Alfa and Friends Sdn Bhd",
         productName: "Little Scientists Toddler",
