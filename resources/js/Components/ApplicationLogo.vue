@@ -1,3 +1,3 @@
 <template>
-    <img src="/images/logo-toddler.png" alt="">
+    <img src="/images/icons/icon_toddler_512.png" alt="">
 </template>

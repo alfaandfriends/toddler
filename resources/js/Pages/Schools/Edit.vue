@@ -10,13 +10,17 @@
                 <Card>
                     <template #title>School Information</template>
                     <template #content>
-                        <div class="grid grid-cols-1 2xl:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 2xl:grid-cols-3 gap-4">
                             <div class="">
-                                <Label>Name</Label>
+                                <Label>School Name</Label>
                                 <Input disabled v-model="$page.props.info.name"></Input>
                             </div>
                             <div class="">
-                                <Label>Email</Label>
+                                <Label>School Code</Label>
+                                <Input disabled v-model="$page.props.info.code"></Input>
+                            </div>
+                            <div class="">
+                                <Label>School Email</Label>
                                 <Input disabled v-model="$page.props.info.email"></Input>
                             </div>
                         </div>
@@ -41,7 +45,8 @@
                         <Table>
                             <TableHeader class="bg-gray-100">
                                 <TableRow>
-                                    <TableHead class="whitespace-nowrap pl-10">Kit</TableHead>
+                                    <TableHead class="whitespace-nowrap pl-10">Device Name</TableHead>
+                                    <TableHead class="whitespace-nowrap">Kit</TableHead>
                                     <TableHead class="whitespace-nowrap">Expiry Date</TableHead>
                                     <TableHead class="whitespace-nowrap text-center">Swap Count</TableHead>
                                     <TableHead class="whitespace-nowrap text-center">Action</TableHead>
@@ -56,7 +61,8 @@
                                     </TableCell>
                                 </TableRow> 
                                 <TableRow v-for="data, index in $page.props.keys.data">
-                                    <TableCell class="whitespace-nowrap pl-10">{{ data.kit_ref?.name }}</TableCell>
+                                    <TableCell class="whitespace-nowrap pl-10">{{ data.device_name }}</TableCell>
+                                    <TableCell class="whitespace-nowrap">{{ data.kit_ref?.name }}</TableCell>
                                     <TableCell class="whitespace-nowrap">{{ moment(data.expiry_date).format('DD MMM YYYY') }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">{{ data.swap_count }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center space-x-2">
@@ -145,16 +151,16 @@ export default {
             this.confirmation.method        =   'delete'
             this.confirmation.id            =   key_id
             this.confirmation.is_open       =   true
-            this.confirmation.title         =   'Delete key'
-            this.confirmation.description   =   'Are you sure want to delete this key?'
+            this.confirmation.title         =   'Delete Keys'
+            this.confirmation.description   =   'Are you sure? This will remove both active keys for this kit.'
         },
         ResetKeySwapCount(key_id){
             this.confirmation.route_name    =   'keys.reset'
             this.confirmation.method        =   'post'
             this.confirmation.id            =   key_id
             this.confirmation.is_open       =   true
-            this.confirmation.title         =   "Reset Key's Swap count"
-            this.confirmation.description   =   "Are you sure want to reset this key's swap count?"
+            this.confirmation.title         =   "Reset Swap Count"
+            this.confirmation.description   =   "Are you sure want to reset the swap count?"
         },
         deleteSchool(){
             this.confirmation.route_name    =   'schools.destroy'
@@ -170,7 +176,7 @@ export default {
             this.confirmation.id            =   this.$page.props.info.id
             this.confirmation.is_open       =   true
             this.confirmation.title         =   'Reset Password'
-            this.confirmation.description   =   "Are you sure want to reset password? New password will be sent to owner's email."
+            this.confirmation.description   =   "Are you sure want to reset password? New password will be sent to school's email."
         },
     }
 }

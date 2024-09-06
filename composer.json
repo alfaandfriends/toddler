@@ -11,6 +11,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "mikemclin/laravel-wp-password": "~2.0.1",
+        "silviolleite/laravelpwa": "^2.0",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

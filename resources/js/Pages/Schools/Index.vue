@@ -33,8 +33,8 @@
                             <TableHeader class="bg-gray-100">
                                 <TableRow>
                                     <TableHead>#</TableHead>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>Code</TableHead>
+                                    <TableHead>School Name</TableHead>
+                                    <TableHead>School Code</TableHead>
                                     <TableHead>Category</TableHead>
                                     <TableHead class="text-center">Action</TableHead>
                                 </TableRow>
@@ -86,19 +86,7 @@
     <DialogModal v-model:open="show.key_activation">
         <template #title>Key Activation</template>
         <template #content>
-            <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-                <span class="font-medium">Notes: </span> 
-                This will remove existing keys and create new keys for the school
-            </div>
             <div class="grid grid-cols-1 gap-4 py-1">
-                <!-- <div class="">
-                    <Alert>
-                        <AlertTitle>Notes: </AlertTitle>
-                        <AlertDescription>
-                        Please note that this will remove existing keys and create new keys for the school
-                        </AlertDescription>
-                    </Alert>
-                </div> -->
                 <div class="">
                     <Label>School Code</Label>
                     <div class="relative w-full items-center">
@@ -115,18 +103,24 @@
                 </div>
                 <div class="">
                     <Label>School Email</Label>
-                    <Input type="text" v-model="key_activation_form.email" :disabled="disable_input" :error="!key_activation_form.email"/>
+                    <div class="relative w-full items-center">
+                        <Input type="text" v-model="key_activation_form.email" :disabled="disable_input" :error="!key_activation_form.email ? !key_activation_form.email : email_exist_text" v-debounce:800ms="checkEmail"/>
+                        <svg aria-hidden="true" v-if="checking_email" class="absolute end-0 inset-y-1 p-1 w-7 h-7 text-gray-200 animate-spin dark:text-gray-600 fill-slate-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                        </svg>
+                    </div>
                 </div>
                 <div class="">
-                        <Label>Category</Label>
+                    <Label>Category</Label>
                     <ComboBox class="w-full" :items="$page.props.options.categories" labelProp="name" valueProperty="id" searchPlaceholder="Search category..." :selectPlaceholder="$page.props.options.categories.find(item => item.id == key_activation_form.category)?.name" v-model="key_activation_form.category" :disabled="disable_input" :error="!key_activation_form.category"></ComboBox>
                 </div>
-                <div class="">
+                <div class="" v-if="!searching_code">
                     <Label>Kit</Label>
                     <div class="flex space-x-6">
                         <template v-for="kit, index in key_activation_form.kits">
                             <div class="flex items-center space-x-2">
-                                <Checkbox :id="'kit_'+kit.id" @update:checked="kit.checked = !kit.checked"></Checkbox>
+                                <Checkbox :id="'kit_'+kit.id" @update:checked="checkKit(kit)"></Checkbox>
                                 <Label class="cursor-pointer" :for="'kit_'+kit.id">{{ kit.name }}</Label>
                             </div>
                         </template>
@@ -135,12 +129,20 @@
                       At least 1 kit is required.
                     </p>
                 </div>
+                <div class="p-4 text-sm text-red-700 rounded-lg bg-red-50" role="alert" v-if="kit_1_exists || kit_2_exists">
+                    <span class="font-medium">Warning: </span> 
+                    This school already have an active keys for 
+                    <span v-html="kit_1_exists && kit_2_exists ? '<b>Kit 1</b> and <b>Kit 2</b>' : kit_1_exists && !kit_2_exists ? '<b>Kit 1</b>' : '<b>Kit 2</b>'"></span>. 
+                    This will replace the keys.
+                </div>
                 <hr class="mt-3">
             </div>
         </template>
         <template #footer>
-            <Button variant="outline" @click="show.key_activation = false">Cancel</Button>
-            <Button @click="searching_code == false ? saveKeyActivation() : ''">Save</Button>
+            <!-- <div class="flex flex-col space-y-2 md:flex-row md:space-x-2"> -->
+                <Button variant="outline" @click="show.key_activation = false">Cancel</Button>
+                <Button @click="saveKeyActivation()">Save</Button>
+            <!-- </div> -->
         </template>
     </DialogModal>
 </template>
@@ -177,6 +179,11 @@ export default {
                 name: ''
             },
             searching_code: false,
+            checking_email: false,
+            email_exists: '',
+            email_exist_text: '',
+            kit_1_exists: false,
+            kit_2_exists: false,
             disable_input: false,
             key_activation_form: {
                 id: '',
@@ -223,6 +230,35 @@ export default {
                     this.searching_code = false
                 })
             }
+            this.initiateKits()
+        },
+        checkEmail(){
+            this.email_exist_text = ''
+            this.email_exists = false
+            if(this.key_activation_form.email){
+                this.checking_email = true
+                axios.get(route('schools.check_email', this.key_activation_form.email))
+                .then((response)=>{
+                    this.email_exists = response.data
+                    if(this.email_exists && !this.key_activation_form.id){
+                        this.email_exist_text = 'Email exists, please use another email.'
+                    }
+                    this.checking_email = false
+                })
+            }
+        },
+        checkKit(kit){
+            this[`kit_${kit.id}_exists`] = false
+            kit.checked = !kit.checked
+            if(kit.checked == true){
+                axios.get(route('schools.check_kit', [this.key_activation_form.id, kit.id]))
+                .then((response)=>{
+                    if(response.data){
+                        this[`kit_${kit.id}_exists`] = response.data
+                    }
+                })
+            }
+            return kit.checked
         },
         showManageCategory(){
             this.show.manage_category = true
@@ -231,18 +267,34 @@ export default {
             this.show.key_activation = true
         },
         saveKeyActivation(){
-            this.$inertia.post(route('schools.store'), this.key_activation_form, {preserveState: false})
+            if(
+                !this.searching_code && 
+                !this.checking_email && 
+                !this.email_exists && 
+                this.key_activation_form.code && 
+                this.key_activation_form.name && 
+                this.key_activation_form.email && 
+                this.key_activation_form.category && 
+                this.key_activation_form.kits.find(item => item.checked == true)
+            ){
+                this.$inertia.post(route('schools.store'), this.key_activation_form, {preserveState: false})
+            }
+        },
+        initiateKits(){
+            this.key_activation_form.kits = []
+            this.$page.props.options.kits.map((item)=>{
+                this.key_activation_form.kits.push({
+                    id: item.id,
+                    name: item.name,
+                    checked: false,
+                })
+            })
+            this.kit_1_exists = false
+            this.kit_2_exists = false
         }
     },
     mounted(){
-        this.key_activation_form.kits = []
-        this.$page.props.options.kits.map((item)=>{
-            this.key_activation_form.kits.push({
-                id: item.id,
-                name: item.name,
-                checked: false,
-            })
-        })
+        this.initiateKits()
     }
 }
 </script>

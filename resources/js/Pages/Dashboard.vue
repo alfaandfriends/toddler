@@ -8,25 +8,34 @@ import moment from 'moment';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import DeleteConfirmation from '@/Components/DeleteConfirmation.vue';
+import AlertDialog from '@/Components/AlertDialog.vue';
 </script>
 
 <script>
 export default {
     components: {
-        DeleteConfirmation
+        DeleteConfirmation, AlertDialog
     },
     data() {
         return {
+            device_name: '',
             confirmation: {
                 is_open: false,
                 use_inertia: false,
                 id: '',
-                route_name: '',
-                method: '',
-                params: '',
+                route_name: 'launch.check_device',
+                method: 'post',
+                params: {'confirm': true},
                 title: '',
+                subtitle: '',
                 description: ''
             },
+            alert_dialog: {
+                is_open: false,
+                title: '',
+                subtitle: '',
+                description: ''
+            }
         }
     },
     methods: {
@@ -42,23 +51,38 @@ export default {
                 localStorage.setItem('app-token', app_token);
             }
             
-            axios.post(route('launch.check_status', app_key), {
-                platform: this.$device.os_name,
-                browser: this.$device.browser_name,
-                app_token : app_token
-            })
+            axios.post(route('launch.check_device', [app_key, app_token]))
             .then((response)=>{
-                if(response.data == 100){
-                    this.confirmation.route_name    =   'launch.check_status'
-                    this.confirmation.method        =   'post'
-                    this.confirmation.id            =   app_key
-                    this.confirmation.is_open       =   true
-                    this.confirmation.params        =   {'proceed': true}
-                    this.confirmation.title         =   'Last Device Swap'
-                    this.confirmation.description   =   'This is your last device swap, if you need too reset the device limit please contact support.'
-                }
-                if(response.data == 200){
+                const data = response.data
+                if(data.launch){
                     this.launch()
+                }
+                if(data.first_device){
+                    this.confirmation.id            =   [app_key, app_token]
+                    this.confirmation.is_open       =   true
+                    this.confirmation.title         =   'Device Name'
+                    this.confirmation.subtitle      =   ''
+                    this.confirmation.description   =   ''
+                }
+                if(data.new_device){
+                    this.confirmation.id            =   [app_key, app_token]
+                    this.confirmation.is_open       =   true
+                    this.confirmation.title         =   'New Device Detected'
+                    this.confirmation.subtitle      =   'Active Device: ' + data.active_device_name
+                    this.confirmation.description   =   'You are trying to launch on a new device, are you sure?'
+                }
+                if(data.last_swap){
+                    this.confirmation.id            =   [app_key, app_token]
+                    this.confirmation.is_open       =   true
+                    this.confirmation.title         =   'New Device Detected'
+                    this.confirmation.subtitle      =   'Active Device: ' + data.active_device_name
+                    this.confirmation.description   =   'You are about to reach maximum swap count for this key, if you need to reset the device limit please contact us.'
+                }
+                if(data.device_limit_reached){
+                    this.alert_dialog.is_open       =   true
+                    this.alert_dialog.title         =   'Device Limit Reached'
+                    this.alert_dialog.subtitle      =   ''
+                    this.alert_dialog.description   =   'Sorry, your have reached device limit. If you wish to reset the device limit, please contact us.'
                 }
             })
         },
@@ -69,7 +93,6 @@ export default {
             const form = document.createElement('form');
             form.action = url;
             form.method = 'POST';
-            form.target = '_blank'; // Open in new tab
 
             // Add the CSRF token
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -82,6 +105,7 @@ export default {
             // Add the localStorage items to the form
             form.appendChild(this.createHiddenInput('app_key', localStorage.getItem('app-key')));
             form.appendChild(this.createHiddenInput('app_token', localStorage.getItem('app-token')));
+            form.appendChild(this.createHiddenInput('device_name', this.device_name));
 
             // Append the form to the body and submit it
             document.body.appendChild(form);
@@ -96,7 +120,7 @@ export default {
             input.name = name;
             input.value = value;
             return input;
-        }
+        },
     },
 }
 </script>
@@ -139,8 +163,7 @@ export default {
                                     <TableCell class="whitespace-nowrap text-center">{{ data.swap_count }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">{{ moment(data.expiry_date).format('DD MMM YYYY') }}</TableCell>
                                     <TableCell class="whitespace-nowrap text-center">
-                                        <Button @click="checkStatus(data.key, data.school_ref.code, data.kit_id)" v-if="data.swap_count != 3">Launch</Button>
-                                        <div class="text-red-500 py-2" v-if="data.swap_count == 3">Device Limit Reached</div>
+                                        <Button @click="checkStatus(data.key, data.school_ref.code, data.kit_id)">Launch</Button>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
@@ -153,6 +176,14 @@ export default {
     </AuthenticatedLayout>
     <DeleteConfirmation :useInertia="confirmation.use_inertia" @success="launch()" :open="confirmation.is_open" @close="confirmation.is_open = false" :routeName="confirmation.route_name" :id="confirmation.id" :method="confirmation.method" :params="confirmation.params">
         <template #title>{{ confirmation.title }}</template>
-        <template #description>{{ confirmation.description }}</template>
+        <template #subtitle v-if="confirmation.subtitle">{{ confirmation.subtitle }}</template>
+        <template #description v-if="confirmation.description">{{ confirmation.description }}</template>
+        <template #content>
+            <Input type="text" maxlength="30" class="text-slate-900" v-model="device_name" placeholder="New Device Name"></Input>
+        </template>
     </DeleteConfirmation>
+    <AlertDialog :open="alert_dialog.is_open" @close="alert_dialog.is_open = false">
+        <template #title>{{ alert_dialog.title }}</template>
+        <template #description>{{ alert_dialog.description }}</template>
+    </AlertDialog>
 </template>
