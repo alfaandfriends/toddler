@@ -16,9 +16,9 @@ export default {
     data() {
         return {
             form: {
-                name: this.$page.props.school.name,
-                code: this.$page.props.school.code,
-                email: this.$page.props.school.email,
+                name: this.$page.props.school?.name || '',
+                code: this.$page.props.school?.code || '',
+                email: this.$page.props.school?.email || '',
             },
             confirmation: {
                 is_open: false,
@@ -77,7 +77,7 @@ export default {
             </div>
 
             <div>
-                <Label for="email">School Code</Label>
+                <Label for="email">School Email</Label>
                 <Input id="email" type="email" v-model="form.email" required autofocus autocomplete="email"></Input>
 
                 <InputError class="mt-2" :message="$page.props.errors.email" />

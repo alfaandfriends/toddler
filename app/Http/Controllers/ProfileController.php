@@ -20,9 +20,11 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $school =   School::where('email', $request->user()->user_email)->first();
+        $can_edit_profile   =   School::where('email', $request->user()->user_email)->exists();
         
         return Inertia::render('Profile/Edit', [
-            'school' => $school
+            'school'            => $school,
+            'can_edit_profile'  => $can_edit_profile
         ]);
     }
 
